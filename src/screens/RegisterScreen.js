@@ -29,7 +29,7 @@ export default function RegisterScreen({ navigation }) {
     }
     navigation.reset({
       index: 0,
-      routes: [{ name: 'Dashboard' }],
+      routes: [{ name: 'RegisterSuccessScreen' }],
     })
   }
 
@@ -37,7 +37,7 @@ export default function RegisterScreen({ navigation }) {
     <Background>
       <BackButton goBack={navigation.goBack} />
       <Logo />
-      <Header>Create Account</Header>
+      <Header>Cree una Cuenta</Header>
       <TextInput
         label="Name"
         returnKeyType="next"
