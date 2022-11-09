@@ -11,13 +11,15 @@ import { theme } from '../core/theme'
 import { emailValidator } from '../helpers/emailValidator'
 import { passwordValidator } from '../helpers/passwordValidator'
 import { nameValidator } from '../helpers/nameValidator'
+import axios from 'axios'
 
 export default function RegisterScreen({ navigation }) {
   const [name, setName] = useState({ value: '', error: '' })
   const [email, setEmail] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
-
-  const onSignUpPressed = () => {
+  const baseURL="http://localhost:8080/process-sms-back-web-services"
+  
+  const onSignUpPressed = () => {    
     const nameError = nameValidator(name.value)
     const emailError = emailValidator(email.value)
     const passwordError = passwordValidator(password.value)
@@ -27,10 +29,43 @@ export default function RegisterScreen({ navigation }) {
       setPassword({ ...password, error: passwordError })
       return
     }
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'RegisterSuccessScreen' }],
-    })
+    const params = JSON.stringify({
+      "username": name.value,
+      "email": email.value,
+      "password": password.value,
+      "role": ["user"]
+    })    
+    
+    axios({
+      method: 'post',
+      url: baseURL+'/api/v1/auth/signup',
+      data: {
+        username: name.value,
+        email: email.value,
+        password: password.value,
+        role: ["user"]
+      },
+      validateStatus: (status) => {
+        return true; // I'm always returning true, you may want to do it depending on the status received
+      },
+    }).catch(error => {
+      console.log('error catch: ',error);
+    }).then(response => {
+        // this is now called!
+        if(response.status==200){
+          console.log(response);
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'RegisterSuccessScreen' }],
+          })
+        } else {
+          console.log(response);
+          return(
+            <div> {alert(response.data.message)} </div>
+          )
+        }
+    });
+    
   }
 
   return (

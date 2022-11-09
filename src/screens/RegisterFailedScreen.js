@@ -5,25 +5,24 @@ import Header from '../components/Header'
 import Paragraph from '../components/Paragraph'
 import Button from '../components/Button'
 
-export default function Dashboard({ navigation }) {
+export default function RegisterFailedScreen({ navigation }) {
   return (
     <Background>
       <Logo />
-      <Header>Resumen de Gastos e Ingresos</Header>
+      <Header>Registo Fallido!</Header>
       <Paragraph>
-        ¡Pronto podras ver el detalle de tus cuentas, ingresos y gastos en una
-        unica pantalla!.
+        Correo o Usuario Existente.
       </Paragraph>
       <Button
         mode="outlined"
         onPress={() =>
           navigation.reset({
             index: 0,
-            routes: [{ name: 'StartScreen' }],
+            routes: [{ name: 'RegisterScreen' }],
           })
         }
       >
-        Logout
+        Registrarse
       </Button>
     </Background>
   )

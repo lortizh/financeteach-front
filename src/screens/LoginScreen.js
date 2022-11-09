@@ -8,25 +8,54 @@ import Button from '../components/Button'
 import TextInput from '../components/TextInput'
 import BackButton from '../components/BackButton'
 import { theme } from '../core/theme'
-import { emailValidator } from '../helpers/emailValidator'
+import { nameValidator } from '../helpers/nameValidator'
 import { passwordValidator } from '../helpers/passwordValidator'
+import axios from 'axios'
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState({ value: '', error: '' })
+  const [name, setName] = useState({ value: '', error: '' })  
   const [password, setPassword] = useState({ value: '', error: '' })
+  const baseURL="http://localhost:8080/process-sms-back-web-services"
 
   const onLoginPressed = () => {
-    const emailError = emailValidator(email.value)
+    const nameError = nameValidator(name.value)
     const passwordError = passwordValidator(password.value)
-    if (emailError || passwordError) {
-      setEmail({ ...email, error: emailError })
+    if (nameError || passwordError) {
+      setName({ ...name, error: nameError })
       setPassword({ ...password, error: passwordError })
       return
     }
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Dashboard' }],
+    const params = JSON.stringify({      
+      "username": name.value,
+      "password": password.value
     })
+    axios({
+      method: 'post',
+      url: baseURL+'/api/v1/auth/signin',
+      data: {
+        username: name.value,
+        password: password.value
+      },
+      validateStatus: (status) => {
+        return true; // I'm always returning true, you may want to do it depending on the status received
+      },
+    }).catch(error => {
+      console.log('error catch: ',error);
+    }).then(response => {
+        // this is now called!
+        if(response.status==200){
+          console.log(response);
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'Dashboard' }],
+          })
+        } else {
+          console.log(response);
+          <div>
+            <b1>Error en Login</b1>
+          </div>
+        }
+    });
   }
 
   return (
@@ -35,16 +64,12 @@ export default function LoginScreen({ navigation }) {
       <Logo />
       <Header>Welcome back.</Header>
       <TextInput
-        label="Email"
+        label="Name"
         returnKeyType="next"
-        value={email.value}
-        onChangeText={(text) => setEmail({ value: text, error: '' })}
-        error={!!email.error}
-        errorText={email.error}
-        autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        keyboardType="email-address"
+        value={name.value}
+        onChangeText={(text) => setName({ value: text, error: '' })}
+        error={!!name.error}
+        errorText={name.error}
       />
       <TextInput
         label="Password"
