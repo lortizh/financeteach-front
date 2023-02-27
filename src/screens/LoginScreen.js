@@ -15,7 +15,9 @@ import axios from 'axios'
 export default function LoginScreen({ navigation }) {
   const [name, setName] = useState({ value: '', error: '' })  
   const [password, setPassword] = useState({ value: '', error: '' })
-  const baseURL="http://localhost:8080/process-sms-back-web-services"
+  //const baseURL="http://3.23.99.58:8080/process-sms-back-web-services"
+  //const baseURL="http://localhost:8080/process-sms-back-web-services"
+  const baseURL="http://localhost:8080/financeteach-sms-back-web-services"
 
   const onLoginPressed = () => {
     const nameError = nameValidator(name.value)
@@ -43,17 +45,16 @@ export default function LoginScreen({ navigation }) {
       console.log('error catch: ',error);
     }).then(response => {
         // this is now called!
-        if(response.status==200){
-          console.log(response);
+        if(response.status==200){          
           navigation.reset({
             index: 0,
             routes: [{ name: 'Dashboard' }],
           })
         } else {
           console.log(response);
-          <div>
-            <b1>Error en Login</b1>
-          </div>
+          return(
+            <div> {alert(response.data.message)} </div>
+          )
         }
     });
   }

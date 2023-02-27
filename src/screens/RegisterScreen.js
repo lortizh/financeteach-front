@@ -17,7 +17,9 @@ export default function RegisterScreen({ navigation }) {
   const [name, setName] = useState({ value: '', error: '' })
   const [email, setEmail] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
-  const baseURL="http://localhost:8080/process-sms-back-web-services"
+  //const baseURL="http://3.23.99.58:8080/process-sms-back-web-services"
+  //const baseURL="http://localhost:8080/process-sms-back-web-services"
+  const baseURL="http://localhost:8080/financeteach-sms-back-web-services"
   
   const onSignUpPressed = () => {    
     const nameError = nameValidator(name.value)
@@ -52,13 +54,12 @@ export default function RegisterScreen({ navigation }) {
       console.log('error catch: ',error);
     }).then(response => {
         // this is now called!
-        if(response.status==200){
-          console.log(response);
+        if(response.status==200){          
           navigation.reset({
             index: 0,
             routes: [{ name: 'RegisterSuccessScreen' }],
           })
-        } else {
+        } else { 
           console.log(response);
           return(
             <div> {alert(response.data.message)} </div>
@@ -74,7 +75,7 @@ export default function RegisterScreen({ navigation }) {
       <Logo />
       <Header>Cree una Cuenta</Header>
       <TextInput
-        label="Name"
+        label="User Name"
         returnKeyType="next"
         value={name.value}
         onChangeText={(text) => setName({ value: text, error: '' })}

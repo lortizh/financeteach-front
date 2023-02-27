@@ -2,8 +2,8 @@
   "background_color": "#ffffff",
   "display": "standalone",
   "lang": "en",
-  "name": "Simple Login Template",
-  "short_name": "Simple Login Template",
+  "name": "Finance Teach App",
+  "short_name": "Finance Teach App",
   "start_url": "/?utm_source=web_app_manifest",
   "orientation": "portrait",
   "icons": [
